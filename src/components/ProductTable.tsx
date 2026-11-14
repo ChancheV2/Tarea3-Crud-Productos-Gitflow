@@ -3,9 +3,10 @@ import type { Product } from "../types";
 interface Props {
   products: Product[];
   onEdit: (product: Product) => void;
+  onDelete: (product: Product) => void;
 }
 
-export function ProductTable({ products, onEdit }: Props) {
+export function ProductTable({ products, onEdit, onDelete }: Props) {
   if (products.length === 0) {
     return <p className="empty">No hay productos registrados.</p>;
   }
@@ -30,6 +31,9 @@ export function ProductTable({ products, onEdit }: Props) {
             <td>{p.stock}</td>
             <td className="actions">
               <button onClick={() => onEdit(p)}>Editar</button>
+              <button className="danger" onClick={() => onDelete(p)}>
+                Eliminar
+              </button>
             </td>
           </tr>
         ))}
