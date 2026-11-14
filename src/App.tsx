@@ -21,6 +21,12 @@ function App() {
     }
   }
 
+  function handleDelete(product: Product) {
+    if (!window.confirm(`¿Eliminar "${product.name}"?`)) return;
+    setProducts(products.filter((p) => p.id !== product.id));
+    if (editing?.id === product.id) setEditing(null);
+  }
+
   return (
     <main>
       <h1>Inventario de productos</h1>
@@ -28,7 +34,7 @@ function App() {
         key={editing?.id ?? "new"}
         editing={editing} onSubmit={handleSubmit} onCancel={() => setEditing(null)}
       />
-      <ProductTable products={products} onEdit={setEditing} />
+      <ProductTable products={products} onEdit={setEditing} onDelete={handleDelete} />
     </main>
   );
 }
