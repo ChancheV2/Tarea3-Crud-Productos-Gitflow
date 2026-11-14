@@ -1,4 +1,5 @@
 import type { Product } from "../types";
+import { formatPrice } from "../format";
 
 interface Props {
   products: Product[];
@@ -27,7 +28,7 @@ export function ProductTable({ products, onEdit, onDelete }: Props) {
           <tr key={p.id}>
             <td>{p.name}</td>
             <td>{p.category}</td>
-            <td>{p.price}</td>
+            <td>{formatPrice(p.price)}</td>
             <td>{p.stock}</td>
             <td className="actions">
               <button onClick={() => onEdit(p)}>Editar</button>
