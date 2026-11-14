@@ -1,15 +1,26 @@
 import { useState } from "react";
 import type { FormEvent } from "react";
-import type { ProductInput } from "../types";
+import type { Product, ProductInput } from "../types";
 
 interface Props {
+  editing: Product | null;
   onSubmit: (data: ProductInput) => void;
+  onCancel: () => void;
 }
 
 const empty = { name: "", category: "", price: "", stock: "" };
 
-export function ProductForm({ onSubmit }: Props) {
-  const [form, setForm] = useState(empty);
+export function ProductForm({ editing, onSubmit, onCancel }: Props) {
+  const [form, setForm] = useState(
+    editing
+      ? {
+          name: editing.name,
+          category: editing.category,
+          price: String(editing.price),
+          stock: String(editing.stock),
+        }
+      : empty,
+  );
   const [error, setError] = useState("");
 
   function handleSubmit(e: FormEvent) {
@@ -37,7 +48,7 @@ export function ProductForm({ onSubmit }: Props) {
 
   return (
     <form onSubmit={handleSubmit}>
-      <h2>Nuevo producto</h2>
+      <h2>{editing ? "Editar producto" : "Nuevo producto"}</h2>
       <label>
         Nombre
         <input value={form.name} onChange={(e) => setForm({ ...form, name: e.target.value })} />
@@ -68,7 +79,12 @@ export function ProductForm({ onSubmit }: Props) {
       </label>
       {error && <p className="error">{error}</p>}
       <div className="actions">
-        <button type="submit">Agregar</button>
+        <button type="submit">{editing ? "Guardar cambios" : "Agregar"}</button>
+        {editing && (
+          <button type="button" className="secondary" onClick={onCancel}>
+            Cancelar
+          </button>
+        )}
       </div>
     </form>
   );
